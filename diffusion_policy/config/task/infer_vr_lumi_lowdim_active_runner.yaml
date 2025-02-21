@@ -1,0 +1,52 @@
+name: vr_lumi_lowdim_active_runner
+
+#for only absolute pos input or only relative pos input
+# obs_dim: 37 # 9*2 keypoints + 2 state
+# action_dim: 9
+# keypoint_dim: 3
+
+#for both absolute pos input and relative pos input
+obs_dim: 37 # 9*2 keypoints + 2 state
+action_dim: 18
+keypoint_dim: 3
+
+env_runner:
+   _target_: diffusion_policy.env_runner.infer_real_pusht_lowdim_bs_runner_v2_A_R.RealPushTLowDimRunner
+   n_obs_steps: ${n_obs_steps}
+   n_action_steps: ${n_action_steps}
+   scene_config_path: ./data/data_diffusion_vr/laby_config/laby_config.json
+   init_humanstate_path: ./data/data_diffusion_vr/my_zaar_shortstart_absolu_relative/
+   relative_actions: True
+   absolute_pos: True
+   lumi: [1, 2, 3, 4, 5, 6]
+   n_episodes_per_lumi: 12
+  # keypoint_visible_rate: ${keypoint_visible_rate}
+  # n_train: 6
+  # n_train_vis: 2
+  # train_start_seed: 0
+  # n_test: 50
+  # n_test_vis: 4
+  # legacy_test: True
+  # test_start_seed: 100000
+  # max_steps: 300
+  # n_obs_steps: ${n_obs_steps}
+  # n_action_steps: ${n_action_steps}
+  # n_latency_steps: ${n_latency_steps}
+  # fps: 10
+  # agent_keypoints: False
+  # past_action: ${past_action_visible}
+  # n_envs: null
+
+dataset:
+  _target_: diffusion_policy.dataset.vr_lumi_dataset.VRLumiDataset
+  zarr_path: ./data/data_diffusion_vr/my_zaar_shortstart_absolu_relative/my_data.zarr
+  horizon: ${horizon}
+  pad_before: ${eval:'${n_obs_steps}-1+${n_latency_steps}'}
+  pad_after: ${eval:'${n_action_steps}-1'}
+  seed: 42
+  val_ratio_traj: 0.1 #
+  val_ratio_lumi: 0.1
+  max_train_episodes: 90
+  metadata_path: ./data/data_diffusion_vr/my_zaar_shortstart_absolu_relative/id_lumi.json
+  n_lumi: 6
+  lumi_val: [2,4,6]
