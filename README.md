@@ -32,7 +32,7 @@ ce=cuda:0 hydra.run.dir='/workspace/rack/data/trainings_diffusion_policy/data/ou
 ```
 
 ## Inference with checkpoints and proposed first frame
-We provide here our used checkout points and one initial frame.
+We provide here our used checkpoints and one initial frame.
 ```
 $ DISPLAY=:0 HYDRA_FULL_ERROR=1 python train.py --config-dir=. --config-name=infer_diffusion_transformer_lowdim_vr_lumi_active_runner_workspace.yaml training.seed=42 training.device=cuda:0 hydra.run.dir='./data/trainings_diffusion_policy/data/outputs/synthetic_^Cta_from_2024.11.15/15.05.17/'
 ```
